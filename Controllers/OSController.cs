@@ -25,7 +25,6 @@ namespace ProjetoEmpreiteira.Controllers
             if (resultado) return Ok("Endereco cliente cadastrado com sucesso.");
 
             return Ok("Houve um problema ao salvar o enderecodo cliente . Endereco não cadastrada.");
-
         }
 
         [HttpGet]
@@ -36,37 +35,27 @@ namespace ProjetoEmpreiteira.Controllers
             if (resultado == null)
                 return NotFound();
             return Ok();
-
         }
 
-
-
-
         [HttpPut]
-
         public IActionResult AtualizarOSs(int id, ViewModelAtualizarOS viewmodelatualizaros)
         {
             var resultado = osrep.AtualizarOS(viewmodelatualizaros.Id, viewmodelatualizaros.AtualizarOS);
 
             if (resultado)
-                return Ok();
             return Ok();
-
-
+            return Ok();
         }
 
         [HttpDelete]
-
         public IActionResult DeletarOS(int id)
         {
 
 
             var resultado = osrep.DeletarOS(id);
             if (resultado)
-                return Ok();
+            return Ok();
             return Ok();
         }
-
     }
-
 }
