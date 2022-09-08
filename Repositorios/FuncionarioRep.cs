@@ -14,9 +14,9 @@ namespace ProjetoEmpreiteira.Repositorios
 
         private readonly string _connection = @"Data Source=DESKTOP-H20UE5F\SQLEXPRESS;Initial Catalog=apidagalera;Integrated Security=True;";
 
-        public FuncionarioDTO SalvarFuncionario(Funcionario funcionario)
+        public bool SalvarFuncionario(Funcionario funcionario)
         {
-            
+
 
             int IdFuncionarioCriado = -1;
             try
@@ -25,6 +25,7 @@ namespace ProjetoEmpreiteira.Repositorios
                               (Nome, CPF, Cargo) 
                               OUTPUT Inserted.Id
                               VALUES (@nome, @cpf, @cargo)";
+
                 using (var connection = new SqlConnection(_connection))
                 {
 
@@ -35,25 +36,20 @@ namespace ProjetoEmpreiteira.Repositorios
                         funcionario.CPF,
                         funcionario.Cargo
                     };
-                    return connection.QueryFirstOrDefault<FuncionarioDTO>(query, parametros);
+                    connection.Execute(query, parametros);
+                    return true;
                 }
-                
+
             }
 
             catch (Exception ex)
             {
 
                 Console.WriteLine(ex.Message);
-                return null;
+                return false;
             }
-                    //Executa a consulta e retorna a primeira coluna da primeira linha no conjunto de resultados retornado pela consulta. Colunas ou linhas adicionais são ignoradas.
-              
-
- 
+            //Executa a consulta e retorna a primeira coluna da primeira linha no conjunto de resultados retornado pela consulta. Colunas ou linhas adicionais são ignoradas.
         }
-
-      
-
         public FuncionarioDTO BuscarFuncionario(int IdFuncionario)
         {
 
@@ -93,10 +89,10 @@ namespace ProjetoEmpreiteira.Repositorios
                 using (var connection = new SqlConnection(_connection))
                 {
 
-       
+
 
                     return connection.Query<FuncionarioDTO>(query).ToList();
-                
+
                 }
 
             }
@@ -108,49 +104,70 @@ namespace ProjetoEmpreiteira.Repositorios
 
             }
 
-            //public bool AtualizarFuncionario (Funcionario funcionario)
-            //{
-
-
-
-
-            //}
         }
 
-        //public FuncionarioDTO AtualizarFuncionario(string nome)
-        //{
+        public bool AtualizarFuncionario(int id, Funcionario funcionario)
+        {
 
-        //    try
-        //    {
-        //        var query = @"UPDATE Funcionario
-        //                    SET Nome = @nome,
-        //                    WHERE Id = @id";
+            try
+            {
 
-        //        using (var sql = new SqlConnection(connection))
+                var query = @"UPDATE SET Nome=@nome, CPF = @cpf, Cargo = @cargo ";
 
-        //        {
-
-        //            SqlCommand command = new SqlCommand(query, sql);
-        //            command.Parameters.AddWithValue("@nome", pessoa.Nome);
-        //            command.Parameters.AddWithValue("@Datanascimento", pessoa.DatadeNascimento);
-        //            command.Parameters.AddWithValue("@telefone", pessoa.Telefone);
-        //            command.Connection.Open();
-        //            command.ExecuteNonQuery();
-
-        //        }
-        //        Console.WriteLine("Pessoa atualizada com sucesso.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        Console.WriteLine("Erro: " + ex.Message);
-
-        //    }
+                using (var connection = new SqlConnection(_connection))
+                {
 
 
+                    var parametros = new
+                    {
+
+                        funcionario.Nome,
+                        funcionario.CPF,
+                        funcionario.Cargo
+                    };
+                    connection.Execute(query, parametros);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                return false;
+            }
 
 
-        //}
+        }
+
+        public bool DeletarFuncionario(int id)
+        {
+
+            try
+            {
+
+                var query = @"DELETE FROM Funcionario WHERE Id=@id";
+
+                using (var connection = new SqlConnection(_connection))
+                {
+
+                    var parametros = new
+                    {
+
+                        id
+
+
+                    };
+
+                    connection.Execute(query, parametros);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
     }
-
 }

@@ -1,14 +1,15 @@
-﻿using System;
+﻿using ProjetoEmpreiteira.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ProjetoEmpreiteira.Model;
 
 namespace ProjetoEmpreiteira.ViewModel
 {
-    public class ViewModelOS
+    public class ViewModelSalvarObra
     {
-        public OS SalvarOS { get; set; }
-        
+
+        public Obra SalvarObra { get; set; }
+
     }
 }

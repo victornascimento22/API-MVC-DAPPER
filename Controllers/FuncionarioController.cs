@@ -22,10 +22,10 @@ namespace ProjetoEmpreiteira.Controllers
         {
 
             var resultado = funcionariorep.SalvarFuncionario(viewModelFuncionario.Funcionario);
-            
-            if(resultado)
-            return Ok("Houve um problema ao salvar. Pessoa não cadastrada.");
-            return Ok("Pessoa cadastrada com sucesso.");
+
+            if (resultado) return Ok("Endereco cliente cadastrado com sucesso.");
+
+            return Ok("Houve um problema ao salvar o enderecodo cliente . Endereco não cadastrada.");
 
         }
         
@@ -56,7 +56,7 @@ namespace ProjetoEmpreiteira.Controllers
 
         [HttpPut]
 
-        public IActionResult AtualizarFuncionario(AtualizarFuncionarioViewModel viewmodelatualizarfuncionario)
+        public IActionResult AtualizarFuncionario(ViewModelAtualizarFuncioanrio viewmodelatualizarfuncionario)
         {
             var resultado = funcionariorep.AtualizarFuncionario(viewmodelatualizarfuncionario.Id, viewmodelatualizarfuncionario.AtualizarFuncionario);
 
@@ -69,11 +69,14 @@ namespace ProjetoEmpreiteira.Controllers
 
         [HttpDelete]
 
-        public IActionResult DeletarFuncionario(DeletarFuncionarioViewModel deletarFuncionarioViewModel, int id)
+        public IActionResult DeletarFuncionario( int id)
         {
 
 
-             var resultado = funcionariorep.DeletarFuncionario(id)
+            var resultado = funcionariorep.DeletarFuncionario(id);
+                if (resultado)
+                return Ok();
+            return Ok();
         }
 
     }

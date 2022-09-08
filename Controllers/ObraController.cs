@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjetoEmpreiteira.DTO;
 using ProjetoEmpreiteira.Model;
+using ProjetoEmpreiteira.Repositorios;
+using ProjetoEmpreiteira.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -10,146 +12,65 @@ using System.Threading.Tasks;
 
 namespace ProjetoEmpreiteira.Controllers
 {
-    [Route("[controller]/[action]")]
-    [ApiController]
-    public class ObraController : ControllerBase
-    {
-        private readonly string _connection = @"Data Source=ITELABD17\SQLEXPRESS;Initial Catalog=apidagalera;Integrated Security=True;";
-
-        public bool SalvarObra(Obra obra)
+   
+        [Route("[controller]/[action]")]
+        [ApiController]
+        public class ObraController : ControllerBase
         {
 
-            try
+            private readonly ObraRep obrasrep = new ObraRep();
+
+            [HttpPost]
+
+            public IActionResult SalvarObras(ViewModelSalvarObra viewModelObra)
             {
 
-                var query = @"INSERT INTO Obra
-                                    (Descricao, DatadeInicio, PrevisaodeTermino)";
+                var resultado = obrasrep.SalvarObra(viewModelObra.SalvarObra);
+
+                if (resultado) return Ok("Endereco cliente cadastrado com sucesso.");
+
+                return Ok("Houve um problema ao salvar o enderecodo cliente . Endereco não cadastrada.");
+
+            }
+
+            [HttpGet]
+            public IActionResult BuscaTodosObras()
+            {
+            var resultado = obrasrep.BuscarTodosObras();
+
+                if (resultado == null)
+                    return NotFound();
+                return Ok();
+
+            }
+
+           
 
 
-                using (var connection = new SqlConnection(_connection))
-                {
+            [HttpPut]
 
-                    var parametros = new
-                    {
+            public IActionResult AtualizarObras(ViewModelAtualizarObra viewmodelatualizarobras)
+            {
+                var resultado = obrasrep.AtualizarObras(viewmodelatualizarobras.Id, viewmodelatualizarobras.AtualizarObra);
 
-                        obra.Descricao,
-                        obra.DatadeInicio,
-                        obra.PrevisaodeTermino
-                    };
-
-                    connection.Execute(query, parametros);
-
-                }
-                return true;
-
+                if (resultado)
+                    return Ok();
+                return Ok();
 
 
             }
-            catch (Exception ex)
+
+            [HttpDelete]
+
+            public IActionResult DeletarObras(int id)
             {
 
-                Console.WriteLine("Erro:", ex.Message);
-                return false;
+
+                var resultado = obrasrep.DeletarObra(id);
+                if (resultado)
+                    return Ok();
+                return Ok();
             }
 
         }
-
-        public ObraDTO BuscarObra(int idobra)
-        {
-
-            try
-            {
-
-                var query = "SELECT * FROM WHERE Id=@idobra";
-
-                using (var connection = new SqlConnection(_connection))
-                {
-
-                    var parametros = new
-                    {
-
-                        idobra
-                    };
-                    return connection.QueryFirstOrDefault<ObraDTO>(query, parametros);
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine(ex.Message);
-                return null;
-            }
-
-        }
-
-        public bool AtualizarObra(int idcliente, Obra obra)
-        {
-
-
-            try
-            {
-
-                var query = @"UPDATE Obra SET Descricao = @descricao, DatadeInicio = @datadeinicio, PrevisaodeTermino = @previsaodetermino";
-
-
-                using (var connection = new SqlConnection(_connection))
-                {
-
-                    var parametros = new
-                    {
-
-                        obra.Descricao,
-                        obra.DatadeInicio,
-                        obra.PrevisaodeTermino
-
-                    };
-
-                    connection.Execute(query, parametros);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-
-        public bool DeletarObra(int id, Obra obra)
-        {
-
-            try
-            {
-
-                var query = @"DELETE FROM Obra WHERE Id = @id";
-
-                using (var connection = new SqlConnection(_connection))
-                {
-
-
-                    var parametros = new
-                    {
-
-                        id
-                    };
-
-                    connection.Execute(query, parametros);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine("erro:",ex.Message);
-                return false;
-
-            }
-
-}
-
-
-}
-
-    
-}
+    }
