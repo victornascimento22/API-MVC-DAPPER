@@ -9,5 +9,6 @@ namespace ProjetoEmpreiteira.ViewModel
     public class ViewModelCliente
     {
         public Cliente ClienteSalvar { get; set; }
+        public Cliente BuscarCliente { get; set; }
     }
 }

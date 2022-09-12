@@ -12,7 +12,7 @@ namespace ProjetoEmpreiteira.Repositorios
     public class EnderecoClienteRep
     {
 
-        private readonly string _connection = @"Data Source=ITELABD05\SQLEXPRESS;Initial Catalog=apidagalera;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=DESKTOP-H20UE5F\SQLEXPRESS;Initial Catalog=apidagalera;Integrated Security=True;";
 
         public bool SalvarEnderecoCliente(EnderecoCliente enderecocliente)
         {

@@ -11,33 +11,32 @@ namespace ProjetoEmpreiteira.Repositorios
 {
     public class ClienteRep
     {
-        private readonly string _connection = @"Data Source=ITELABD17\SQLEXPRESS;Initial Catalog=apidagalera;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=DESKTOP-H20UE5F\SQLEXPRESS;Initial Catalog=apidagalera;Integrated Security=True;";
 
         public bool SalvarCliente(Cliente cliente)
         {
-            int IdPessoaCriada = -1;
+            
             try
             {
                 var query = @"INSERT INTO Cliente 
                               (Nome, CNPJ, Telefone) 
-                              OUTPUT Inserted.Id
+                       
                               VALUES (@nome, @cnpj, @telefone)";
-                using (var sql = new SqlConnection(_connection))
+                using (var connection = new SqlConnection(_connection))
                 {
-                    SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@nome", cliente.Nome);
-                    command.Parameters.AddWithValue("@cnpj", cliente.CNPJ);
-                    command.Parameters.AddWithValue("@telefone", cliente.Telefone);
-                    command.Connection.Open();
-                    IdPessoaCriada = (int)command.ExecuteScalar();
 
+                    var parametros = new
+                    {
+
+                        cliente.Nome,
+                        cliente.CNPJ,
+                        cliente.Telefone
+                    };
+                    connection.Execute(query, parametros);
+                    return true;
                     //Executa a consulta e retorna a primeira coluna da primeira linha no conjunto de resultados retornado pela consulta. Colunas ou linhas adicionais são ignoradas.
                 }
-
-                //SalvarEndereco(cliente.Endereco, IdPessoaCriada);
-
-                Console.WriteLine("Pessoa cadastrada com sucesso.");
-                return true;
+            
 
             }
             catch (Exception ex)
